@@ -117,16 +117,11 @@ body {
   margin-top: 1.4em;   /* one line-space below the paragraph */
   font-size: var(--size-body);
   line-height: 1.4;
-  /* Aligns the "A" under the "S" of the title: the title indents 7ch at
-     12px; at this 15px size the same distance is 7 × (12/15) = 5.6ch.
-     margin (not text-indent) so any wrapped line stays aligned too. */
-  margin-left: 5.6ch;
 }
 
 .intro-contact {
   font-size: var(--size-body);
   line-height: 1.4;
-  margin-left: 5.6ch;  /* same alignment as the outro line above */
 }
 
 /* Links: instant underline on hover / keyboard focus. */
