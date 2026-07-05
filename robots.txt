@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://snaufahu.com/sitemap.xml
