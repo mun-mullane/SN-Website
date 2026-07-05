@@ -79,10 +79,23 @@ body {
   transition: opacity 2.6s ease-in-out;
 }
 
-/* Shimmer: JS wraps each word in a span and flickers its colour through
-   the palette; the transition eases every flicker so it pulses, not strobes. */
-.shimmer-word {
-  transition: color 0.26s ease-in-out;
+/* ---- Haveluliku (background photograph) ----
+   Hidden until the body carries .reveal (toggled by clicking Kuli).
+   cover = fills the whole viewport, ratio preserved, edges crop as
+   needed (Figma "Fill"). multiply = the page colour comes through.   */
+.haveluliku {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url("../images/haveluliku.jpg") center / cover no-repeat;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+
+body.reveal .haveluliku {
+  opacity: 1;
 }
 
 /* ---- Intro text ---- */
@@ -105,7 +118,11 @@ body {
   letter-spacing: 0.02em;
   text-indent: 7ch; /* the hanging indent on the name */
   line-height: 1.4;
-  -webkit-text-stroke: 0.08px var(--ink); /* hairline stroke — optically bolder */
+  -webkit-text-stroke: 0.3px var(--ink); /* hairline stroke — optically bolder */
+  /* Small-caps emulation: caps squashed to 95% height, width untouched.
+     Origin bottom-left keeps the baseline (and gap to the paragraph) fixed. */
+  transform: scaleY(0.95);
+  transform-origin: left bottom;
 }
 
 .intro-body {
@@ -147,7 +164,7 @@ body {
   bottom: var(--intro-top);
   z-index: 1;
   width: clamp(210px, 23.96vw, 345px); /* 345 / 1440 = 23.96%; higher floor = gentler shrink */
-  pointer-events: none;
+  cursor: pointer;
 }
 
 .kuli svg {
@@ -156,9 +173,15 @@ body {
   display: block;
 }
 
-/* Dog shares the text's ink colour — overrides the SVG's baked-in fill */
+/* Dog shares the text's ink colour; dips to red while the image is
+   revealed. Same duration as the image fade so they move together. */
 .kuli path {
   fill: var(--ink);
+  transition: fill 0.9s ease;
+}
+
+body.reveal .kuli path {
+  fill: #920909;
 }
 
 /* ---- Small screens ---- */

@@ -9,6 +9,10 @@
 </head>
 <body>
 
+  <!-- Haveluliku: background photograph, revealed by clicking Kuli.
+       Multiply blend lets the page colour come through. -->
+  <div class="haveluliku" aria-hidden="true"></div>
+
   <!-- Fetu: dot field. Each dot placed at its Figma position as a % of the
        viewport, inset so it never crops. --x / --y are cx/cy ÷ 1347 / 944. -->
   <div class="fetu" aria-hidden="true">
@@ -38,8 +42,8 @@
     <p class="intro-contact"><a id="contact-mail" href="#">Contact</a>, <a href="https://www.instagram.com/mundane.mullane/" target="_blank" rel="noopener">Instagram</a></p>
   </main>
 
-  <!-- Kuli: dog illustration, floating bottom-right -->
-  <div class="kuli" aria-hidden="true">
+  <!-- Kuli: dog illustration, floating bottom-right. Click to reveal. -->
+  <div class="kuli" role="button" tabindex="0" aria-label="Reveal background image">
     <svg viewBox="0 0 345 229" xmlns="http://www.w3.org/2000/svg">
       <path id="kuli-body" d="M345 166.536L282.265 104.071L345 41.6065V166.508V166.536ZM73.1676 104.098L94.0884 124.929V229.027L146.363 176.978L177.716 208.197L209.07 176.978L261.344 229.027V124.929L282.265 104.098H73.1676ZM31.3536 62.4645V104.098H73.1676L31.3536 62.4645ZM31.3536 0L0 31.2186L31.3536 62.4371V0Z"/>
       <path id="kuli-tail" d="M303.186 124.902L250.912 176.951L303.186 229V124.902Z"/>
