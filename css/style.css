@@ -1,0 +1,190 @@
+/* ============================================
+   Shaun Naufahu — landing page
+   Design canvas reference: 1440 × 1024
+   ============================================ */
+
+/* ---- Triptych Roman ----
+   Drop your font files into /fonts and the names below will pick them up.
+   woff2 is the only format you really need for modern browsers.       */
+@font-face {
+  font-family: "Triptych Roman";
+  src: url("../fonts/Triptych-Roman.woff2") format("woff2"),
+       url("../fonts/Triptych-Roman.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #FFF7F1;
+  --ink: #4A2105;
+  --dot: #ECDBC5;
+
+  /* Type scale: your Figma values (12 / 15 at 1440) as the max,
+     easing down slightly on small screens. */
+  --size-title: clamp(11px, 0.833vw, 12px);   /* 12px at 1440 */
+  --size-body:  clamp(14px, 1.042vw, 15px);   /* 15px at 1440 */
+
+  /* Text block position: left stays proportional (120 / 1440 = 8.33%),
+     top is locked to a fixed 26px from the top of the page. */
+  --intro-left: 8.33vw;
+  --intro-top: 26px;
+
+  /* Dots: rendered diameter, and the safe inset that keeps every dot
+     at least 5px from any edge (5px + half a dot). */
+  --dot-size: clamp(16px, 1.94vw, 29px);
+  --dot-pad: calc(5px + var(--dot-size) / 2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Triptych Roman", Georgia, "Times New Roman", serif;
+  overflow: hidden; /* single-viewport page, nothing scrolls */
+}
+
+/* ---- Fetu (dot field) ----
+   Dots are placed individually so every one stays on-page with a small
+   inset. Each dot's centre maps into the range [pad, 100% − pad], so the
+   dot edge never comes within 5px of the viewport edge.                */
+.fetu {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.fetu .dot {
+  position: absolute;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background: var(--dot);
+  left: calc(var(--dot-pad) + var(--x) * (100% - 2 * var(--dot-pad)));
+  top:  calc(var(--dot-pad) + var(--y) * (100% - 2 * var(--dot-pad)));
+  transform: translate(-50%, -50%);
+  /* Glisten: JS drives opacity down to ~.25 and back at random intervals;
+     the transition here is what makes each drift slow and ambient. */
+  transition: opacity 2.6s ease-in-out;
+}
+
+/* Shimmer: JS wraps each word in a span and flickers its colour through
+   the palette; the transition eases every flicker so it pulses, not strobes. */
+.shimmer-word {
+  transition: color 0.26s ease-in-out;
+}
+
+/* ---- Intro text ---- */
+.intro {
+  position: relative;
+  z-index: 1;
+  padding-top: var(--intro-top);
+  margin-left: var(--intro-left); /* margin, not padding — sits OUTSIDE the measure */
+  /* Measure = the text column itself now. Tight on narrow screens (the 38ch
+     you liked), opening as the viewport widens until it reaches ~540px — the
+     column width measured from your Figma screenshot (537px @ 15px). Caps
+     there so it never over-runs and never shrinks as the page grows. */
+  max-width: clamp(38ch, 44vw, 540px);
+}
+
+.intro-title {
+  font-size: var(--size-title);
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-indent: 7ch; /* the hanging indent on the name */
+  line-height: 1.4;
+  -webkit-text-stroke: 0.08px var(--ink); /* hairline stroke — optically bolder */
+}
+
+.intro-body {
+  font-size: var(--size-body);
+  line-height: 1.4;
+}
+
+.intro-outro {
+  margin-top: 1.4em;   /* one line-space below the paragraph */
+  font-size: var(--size-body);
+  line-height: 1.4;
+  /* Aligns the "A" under the "S" of the title: the title indents 7ch at
+     12px; at this 15px size the same distance is 7 × (12/15) = 5.6ch.
+     margin (not text-indent) so any wrapped line stays aligned too. */
+  margin-left: 5.6ch;
+}
+
+.intro-contact {
+  font-size: var(--size-body);
+  line-height: 1.4;
+  margin-left: 5.6ch;  /* same alignment as the outro line above */
+}
+
+/* Links: instant underline on hover / keyboard focus. */
+.intro-contact a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.intro-contact a:hover,
+.intro-contact a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  text-decoration-thickness: 1px;
+}
+
+/* ---- Kuli (dog) ----
+   Floats with a bottom offset equal to the text block's top offset
+   (26px), mirroring it for vertical symmetry. Horizontal position
+   unchanged from Figma (right gap 115 / 1440 = 7.99vw).               */
+.kuli {
+  position: fixed;
+  right: 7.99vw;
+  bottom: var(--intro-top);
+  z-index: 1;
+  width: clamp(210px, 23.96vw, 345px); /* 345 / 1440 = 23.96%; higher floor = gentler shrink */
+  pointer-events: none;
+}
+
+.kuli svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Dog shares the text's ink colour — overrides the SVG's baked-in fill */
+.kuli path {
+  fill: var(--ink);
+}
+
+/* ---- Small screens ---- */
+@media (max-width: 600px) {
+  .intro {
+    max-width: none;
+    margin-right: var(--intro-left); /* symmetric side margins on phones */
+  }
+
+  .intro-title {
+    text-indent: 5ch;
+  }
+}
+
+/* ---- Reduced motion (for when animation is added later) ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
